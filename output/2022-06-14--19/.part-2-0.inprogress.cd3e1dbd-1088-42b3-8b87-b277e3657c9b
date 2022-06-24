@@ -1,0 +1,2 @@
+Event(name=Bob, path=./cart, ms=2000)
+Event(name=Alice, path=./prod?id=300, ms=3600)
