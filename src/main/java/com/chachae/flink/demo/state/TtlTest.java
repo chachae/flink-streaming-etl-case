@@ -16,7 +16,7 @@ import org.apache.flink.api.common.time.Time;
  * @author <a href="mailto:chachae@foxmail.com">chenyuexin</a>
  * @date 2022/6/24 16:27
  */
-public class TTLTest {
+public class TtlTest {
 
     public static void main(String[] args) {
         StateTtlConfig ttlConfig = StateTtlConfig
