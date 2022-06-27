@@ -2,6 +2,8 @@ package com.chachae.flink.demo.sideoutput;
 
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
+import org.apache.flink.streaming.api.environment.LocalStreamEnvironment;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.ProcessFunction;
 import org.apache.flink.util.Collector;
 
@@ -13,11 +15,15 @@ import org.apache.flink.util.Collector;
  */
 public class SideOutputTest {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
-        DataStream<Integer> input = null;
+        LocalStreamEnvironment env = StreamExecutionEnvironment.createLocalEnvironment();
 
-        input.process(new ProcessFunction<Integer, Integer>() {
+        DataStream<Integer> input = env.fromElements(
+                1,2,3,4,5
+        );
+
+        SingleOutputStreamOperator<Integer> process = input.process(new ProcessFunction<Integer, Integer>() {
             @Override
             public void processElement(Integer value, ProcessFunction<Integer, Integer>.Context context, Collector<Integer> out) {
 
@@ -30,8 +36,12 @@ public class SideOutputTest {
         });
 
         // 可以在 DataStream 运算结果上使用 getSideOutput(OutputTag) 方法获取旁路输出流。这将产生一个与旁路输出流结果类型一致的 DataStream：
-        SingleOutputStreamOperator<Integer> mainDataStream = null;
-        DataStream<String> sideOutputStream = mainDataStream.getSideOutput(SideOutputConsts.SIDE_OUTPUT_TAG);
+        process.getSideOutput(SideOutputConsts.SIDE_OUTPUT_TAG)
+                .print()
+                .setParallelism(1);
+
+        env.execute();
+
 
     }
 
