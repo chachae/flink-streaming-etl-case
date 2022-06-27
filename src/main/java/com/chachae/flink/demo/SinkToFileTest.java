@@ -14,7 +14,7 @@ import java.time.Duration;
 /**
  * TODO Description
  *
- * @author <a href="mailto:chenyuexin@shoplineapp.com">chenyuexin</a>
+ * @author <a href="mailto:chachae@foxmail.com">chenyuexin</a>
  * @date 2022/6/14 19:00
  */
 public class SinkToFileTest {

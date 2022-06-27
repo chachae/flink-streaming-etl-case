@@ -11,7 +11,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 /**
  * TODO Description
  *
- * @author <a href="mailto:chenyuexin@shoplineapp.com">chenyuexin</a>
+ * @author <a href="mailto:chachae@foxmail.com">chenyuexin</a>
  * @date 2022/6/14 21:43
  */
 public class SinkToMysqlTest {

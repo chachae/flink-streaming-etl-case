@@ -11,7 +11,7 @@ import java.util.Properties;
 /**
  * TODO Description
  *
- * @author <a href="mailto:chenyuexin@shoplineapp.com">chenyuexin</a>
+ * @author <a href="mailto:chachae@foxmail.com">chenyuexin</a>
  * @date 2022/6/14 21:56
  */
 public class KafkaConsumerTest {

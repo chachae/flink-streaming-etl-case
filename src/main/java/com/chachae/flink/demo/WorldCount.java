@@ -10,7 +10,7 @@ import org.apache.flink.util.Collector;
 import java.nio.charset.StandardCharsets;
 
 /**
- * @author <a href="mailto:chenyuexin@shoplineapp.com">chenyuexin</a>
+ * @author <a href="mailto:chachae@foxmail.com">chenyuexin</a>
  * @date 2022/6/10 21:07
  */
 public class WorldCount {
