@@ -6,6 +6,18 @@ import org.apache.flink.api.common.eventtime.WatermarkGenerator;
 import org.apache.flink.api.common.eventtime.WatermarkOutput;
 
 /**
+ * TTL 配置有以下几个选项： newBuilder 的第一个参数表示数据的有效期，是必选项。
+ * <p>
+ * TTL 的更新策略（默认是 OnCreateAndWrite）：
+ * <p>
+ * StateTtlConfig.UpdateType.OnCreateAndWrite - 仅在创建和写入时更新
+ * <p>
+ * StateTtlConfig.UpdateType.OnReadAndWrite - 读取时也更新
+ * <p>
+ * (注意: 如果你同时将状态的可见性配置为 StateTtlConfig.StateVisibility.ReturnExpiredIfNotCleanedUp， 那么在PyFlink作业中，状态的读缓存将会失效，这将导致一部分的性能损失)
+ *
+ * <a href="https://nightlies.apache.org/flink/flink-docs-release-1.15/zh/docs/dev/datastream/fault-tolerance/state/">about state TTL config</a>
+ *
  * @author <a href="mailto:chachae@foxmail.com">chenyuexin</a>
  * @date 2022/6/27 15:34
  */
@@ -18,7 +30,7 @@ public class DiyWatermarkTest {
     public static class BoundedOutOfOrdernessGenerator implements WatermarkGenerator<Event> {
 
         // 3.5 秒
-        private final long maxOutOfOrderness = 3500;
+        private final long maxOutOfOrderness = 3_500L;
 
         private long currentMaxTimestamp;
 
