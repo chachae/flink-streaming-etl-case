@@ -11,6 +11,9 @@ import org.apache.flink.streaming.api.environment.LocalStreamEnvironment;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 
+import java.io.IOException;
+import java.util.Objects;
+
 /**
  * 这个例子实现了一个简单的计数窗口。 我们把元组的第一个元素当作 key（在示例中都 key 都是 “1”）。
  * 该函数将出现的次数以及总和存储在 “ValueState” 中。 一旦出现次数达到 2，则将平均值发送到下游，
@@ -27,16 +30,14 @@ public class CountWindowAverageTest extends RichFlatMapFunction<Tuple2<Long, Lon
     private transient ValueState<Tuple2<Long, Long>> sum;
 
     @Override
-    public void open(Configuration config) {
+    public void open(Configuration config) throws IOException {
         ValueStateDescriptor<Tuple2<Long, Long>> descriptor =
                 new ValueStateDescriptor<>(
                         // the state name
                         "average",
                         // type information
                         TypeInformation.of(new TypeHint<Tuple2<Long, Long>>() {
-                        }),
-                        // default value of the state, if nothing was set
-                        Tuple2.of(0L, 0L));
+                        }));
         sum = getRuntimeContext().getState(descriptor);
     }
 
@@ -45,6 +46,10 @@ public class CountWindowAverageTest extends RichFlatMapFunction<Tuple2<Long, Lon
 
         // access the state value
         Tuple2<Long, Long> currentSum = sum.value();
+
+        if (Objects.isNull(currentSum)) {
+            currentSum = Tuple2.of(0L, 0L);
+        }
 
         // update the count
         currentSum.f0 += 1;
