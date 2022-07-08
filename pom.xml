@@ -14,12 +14,42 @@
         <flink.version>1.15.0</flink.version>
         <scala.version>2.11</scala.version>
         <lombok.version>1.18.24</lombok.version>
-        <fastjson.version>2.0.7</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <mysql.driver.version>8.0.29</mysql.driver.version>
+        <aliyun-flink-log-connector.version>0.1.33</aliyun-flink-log-connector.version>
+        <google-protobuf-java.version>3.21.2</google-protobuf-java.version>
+        <hutool.version>5.7.18</hutool.version>
+        <flink-connector-starrocks.version>1.2.3_flink-1.15</flink-connector-starrocks.version>
+        <logback.version>1.2.11</logback.version>
+        <slf4j.version>1.7.25</slf4j.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+
+            <dependency>
+                <groupId>com.starrocks</groupId>
+                <artifactId>flink-connector-starrocks</artifactId>
+                <version>${flink-connector-starrocks.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.aliyun.openservices</groupId>
+                <artifactId>flink-log-connector</artifactId>
+                <version>${aliyun-flink-log-connector.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-java</artifactId>
+                <version>${google-protobuf-java.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.apache.flink</groupId>
@@ -63,6 +93,13 @@
                 <version>${flink.version}</version>
             </dependency>
 
+            <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-core -->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
@@ -90,6 +127,12 @@
                 <version>${flink.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-jdk14</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
             <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-core -->
             <dependency>
                 <groupId>org.apache.flink</groupId>
@@ -101,6 +144,37 @@
     </dependencyManagement>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-core -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.starrocks</groupId>
+            <artifactId>flink-connector-starrocks</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.aliyun.openservices</groupId>
+            <artifactId>flink-log-connector</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.flink</groupId>

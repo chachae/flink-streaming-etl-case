@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration debug="false">
+
+    <!--设置日志上下文名称，后面输出格式中可以通过定义 %contextName 来打印日志上下文名称-->
+    <contextName>sk-log</contextName>
+    <!--用来设置相关变量,通过key-value的方式配置，然后在后面的配置文件中通过 ${key}来访问-->
+    <property name="LOG_PATH" value="/data/weblog/java/flink_console/"/>
+    <!-- 输出格式 -->
+    <property name="LOG_FORMAT" value="[%date{yyyy-MM-dd HH:mm:ss}] [%logger{36}:%line] [%level] - %msg%n"/>
+    <!-- 活动文件的大小 -->
+    <property name="max.file.size" value="500MB"/>
+    <!-- 保留的归档文件的最大数量 -->
+    <property name="max.history" value="30"/>
+    <!-- 控制所有归档日志文件的总大小 -->
+    <property name="total.size.cap" value="30GB"/>
+
+    <!--======================================ConsoleAppender===================================================================-->
+    <!--日志输出组件，主要负责日志的输出以及格式化日志。  default:标准输出-->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <!--定义了一个过滤器,在LEVEL之下的日志输出不会被打印出来   这个和logger里的level共同决定在console输出的级别（filter非必需的）
+          临界值过滤器，过滤掉低于指定临界值的日志。当日志级别等于或高于临界值时，过滤器返回NEUTRAL；当日志级别低于临界值时，日志会被拒绝。 -->
+        <!--<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>-->
+        <!--级别过滤器，根据日志级别进行过滤。如果日志级别等于配置级别，过滤器会根据onMath 和 onMismatch接收或拒绝日志
+        <level>:设置过滤级别
+        <onMatch>:用于配置符合过滤条件的操作
+        <onMismatch>:用于配置不符合过滤条件的操作-->
+        <!--        <filter class="ch.qos.logback.classic.filter.LevelFilter">-->
+        <!--            <level>debug</level>-->
+        <!--            <onMatch>ACCEPT</onMatch>-->
+        <!--            <onMismatch>DENY</onMismatch>-->
+        <!--        </filter>-->
+        <!-- encoder 默认配置为PatternLayoutEncoder -->
+        <!--定义控制台输出格式-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <!--
+            %d{YYYY-MM-dd  HH:mm:ss} 时间格式 hh是12h制  HH是24h制
+            [%thread]      线程
+            %-5level       级别
+            %logger{36}    日志包     36包长度
+            [%file : %line]   目标类  和  行数
+            %msg           log信息
+            %n              换行
+            (encoder必需的）-->
+        <encoder>
+            <pattern>${LOG_FORMAT}</pattern>
+        </encoder>
+    </appender>
+
+    <!--==========================RollingFileAppender===============================================================================-->
+
+    <appender name="debug" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/debug.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>debug</level>
+        </filter>
+        <!--rollingPolicy没写的话 会有警告 No TriggeringPolicy was set for the RollingFileAppender named file 没有输出本地文件-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/debug.log.%i.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxFileSize>${max.file.size}</maxFileSize>
+            <maxHistory>${max.history}</maxHistory>
+            <totalSizeCap>${total.size.cap}</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_FORMAT}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <!--如果是 true，日志被追加到文件结尾，如果是 false，清空现存文件，默认是true
+        but 我加了之后 警告 Append mode is mandatory for RollingFileAppender. Defaulting to append=true. 我还是不加了-->
+        <!--            <append>false</append>-->
+        <file>${LOG_PATH}/info.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <!--rollingPolicy没写的话 会有警告 No TriggeringPolicy was set for the RollingFileAppender named file 没有输出本地文件-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/info.log.%i.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxFileSize>${max.file.size}</maxFileSize>
+            <maxHistory>${max.history}</maxHistory>
+            <totalSizeCap>${total.size.cap}</totalSizeCap>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${LOG_FORMAT}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="warn" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <!--如果是 true，日志被追加到文件结尾，如果是 false，清空现存文件，默认是true
+        but 我加了之后 警告 Append mode is mandatory for RollingFileAppender. Defaulting to append=true. 我还是不加了-->
+        <!--            <append>false</append>-->
+        <file>${LOG_PATH}/warn.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
+        <!--rollingPolicy没写的话 会有警告 No TriggeringPolicy was set for the RollingFileAppender named file 没有输出本地文件-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/warn.log.%i.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxFileSize>${max.file.size}</maxFileSize>
+            <maxHistory>${max.history}</maxHistory>
+            <totalSizeCap>${total.size.cap}</totalSizeCap>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${LOG_FORMAT}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <!--如果是 true，日志被追加到文件结尾，如果是 false，清空现存文件，默认是true
+        but 我加了之后 警告 Append mode is mandatory for RollingFileAppender. Defaulting to append=true. 我还是不加了-->
+        <!--            <append>false</append>-->
+        <file>${LOG_PATH}/error.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <!--rollingPolicy没写的话 会有警告 No TriggeringPolicy was set for the RollingFileAppender named file 没有输出本地文件-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/error.log.%i.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxFileSize>${max.file.size}</maxFileSize>
+            <maxHistory>${max.history}</maxHistory>
+            <totalSizeCap>${total.size.cap}</totalSizeCap>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${LOG_FORMAT}</pattern>
+        </encoder>
+    </appender>
+
+    <!--=========================================================================================================-->
+    <appender name="sentry" class="com.shopline.datacenter.drifting.log.CustomSentryAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+            <level>WARN</level>
+        </filter>
+    </appender>
+
+    <!--root是默认的logger 这里没设定输出级别-->
+    <root level="INFO">
+        <!--定义了appender，日志会通过往appender里面写-->
+        <appender-ref ref="info"/>
+        <appender-ref ref="warn"/>
+        <appender-ref ref="error"/>
+        <appender-ref ref="console"/>
+    </root>
+    <logger name="akka" level="INFO"/>
+    <logger name="org.apache.kafka" level="INFO"/>
+    <logger name="org.apache.hadoop" level="INFO"/>
+    <logger name="org.apache.zookeeper" level="INFO"/>
+    <logger name="org.apache.http.wire" level="INFO"/>
+    <logger name="org.apache.http.headers" level="INFO"/>
+</configuration>
